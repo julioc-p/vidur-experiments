@@ -25,7 +25,6 @@ def get_folder_stats(experiment_dir, folder):
     total_mfu += total_mfu_single_experiment
     replicas += replicas_single_experiment
   
-
   try:
     avg_request_scheduling_delay = total_request_scheduling_delay / num_requests
   except ZeroDivisionError:
@@ -73,9 +72,27 @@ def get_mfu_single_replica(file):
         mfu += data[key]
   return mfu
 
+def get_single_stats(element, experiment_stats):
+  results = {}
+  indices_split = {"replica":1, "batch":3,"qps":5 }
+  for experiment in experiment_stats:
+      type_element = experiment.split("_")[indices_split[element]]
+      if type_element not in results:
+          results[type_element] = {"avg_mfu": [], "avg_request_scheduling_delay": []}
+      results[type_element]["avg_mfu"].append(experiment_stats[experiment]["avg_mfu"])
+      results[type_element]["avg_request_scheduling_delay"].append(experiment_stats[experiment]["avg_request_scheduling_delay"])
+  for type_element in results:
+      results[type_element]["avg_mfu"] = sum(results[type_element]["avg_mfu"]) / len(results[type_element]["avg_mfu"])
+      results[type_element]["avg_request_scheduling_delay"] = sum(results[type_element]["avg_request_scheduling_delay"]) / len(results[type_element]["avg_request_scheduling_delay"])
+  return results
 
 if __name__ == '__main__':
 
     experiment_dir = "simulator_output"
     experiment_stats = get_experiments_stats(experiment_dir)
-    print(experiment_stats)
+    for element in ["replica", "batch", "qps"]:
+        print(element.capitalize())
+        print(get_single_stats(element, experiment_stats))
+    
+    #print(experiment_stats)
+
