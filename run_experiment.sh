@@ -37,7 +37,7 @@ python -m vidur.main \
   --replica_config_tensor_parallel_size 1 \
   --replica_config_num_pipeline_stages 1 \
   --request_generator_config_type synthetic \
-  --synthetic_request_generator_config_num_requests 10000 \
+  --synthetic_request_generator_config_num_requests 512 \
   --length_generator_config_type trace \
   --trace_request_length_generator_config_max_tokens 4096 \
   --trace_request_length_generator_config_trace_file ./data/processed_traces/splitwise_conv.csv \
