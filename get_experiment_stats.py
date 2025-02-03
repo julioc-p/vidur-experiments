@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import CubicSpline
 
-default_elements = {"replica": 1, "batch": 1, "qps": 0.5}
+default_elements = {"replica": 4, "batch": 128, "qps": 200}
 
 
 def get_experiments_stats(experiment_dir):
@@ -100,6 +100,7 @@ def get_mfu_single_replica(file):
 
 def get_single_stats(element, experiment_stats):
     results = {}
+    # indices to find the value of the element in the split of the experiment name
     indices_split = {"replica": 1, "batch": 3, "qps": 5}
     ignore = False
     for experiment in experiment_stats:
@@ -156,9 +157,9 @@ def store_element_graph(elements_stats):
         plt.clf()
 
         y = [tupl[1]["avg_mfu"] for tupl in sorted_stats]
-        print(element)
-        print(x)
-        print(y)
+        # print(element)
+        # print(x)
+        # print(y)
         plt.title(f"Average MFU for {element.capitalize()}")
         plt.xlabel(element.capitalize())
         plt.ylabel("Average MFU")
@@ -198,7 +199,8 @@ if __name__ == "__main__":
     elements_stats = {
         element: get_single_stats(element, experiment_stats) for element in elements
     }
-    print(elements_stats)
+    # print(elements_stats["replica"])
+    # print(elements_stats)
     store_graphs(elements_stats, experiment_stats)
 
     # print(experiment_stats)
